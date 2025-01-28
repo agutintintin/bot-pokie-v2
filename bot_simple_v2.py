@@ -1,3 +1,4 @@
+# This example requires the 'members' and 'message_content' privileged intents to function.
 
 import discord
 from discord.ext import commands
@@ -7,7 +8,7 @@ from contrazeñas import llave
 description = '''An example bot to showcase the discord.ext.commands extension
 module.
 
-There are a number of utility commands being showcased here.'''
+Aquí se muestran varios comandos de utilidad.'''
 
 intents = discord.Intents.default()
 intents.members = True
@@ -18,66 +19,66 @@ bot = commands.Bot(command_prefix='/', description=description, intents=intents)
 
 @bot.event
 async def on_ready():
-    print(f'Logged in as {bot.user} (ID: {bot.user.id})')
+    print(f'Iniciado sesión como {bot.user} (ID: {bot.user.id})')
     print('------')
 
 
 @bot.command()
-async def add(ctx, left: int, right: int):
-    """Adds two numbers together."""
+async def sumar(ctx, left: int, right: int):
+    """Suma dos números separados."""
     await ctx.send(left + right)
 
 @bot.command()
-async def password(ctx, Num: int = 5):
+async def contrazeña(ctx, Num: int = 5):
+    """Te da una contrazeña a la que le puedes poner un largo."""
     await ctx.send(f'Esta es la contraseña:{llave(Num)}')
-    
 
 @bot.command()
 async def roll(ctx, dice: str):
-    """Rolls a dice in NdN format."""
+    """Lanza un dado en formato NdN."""
     try:
         rolls, limit = map(int, dice.split('d'))
     except Exception:
-        await ctx.send('Format has to be in NdN!')
+        await ctx.send('El formato tiene que estar en NdN!')
         return
 
     result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
     await ctx.send(result)
 
 
-@bot.command(description='For when you wanna settle the score some other way')
-async def choose(ctx, *choices: str):
-    """Chooses between multiple choices."""
+@bot.command(description='Para cuando quieras ajustar cuentas de otra manera')
+async def elegir(ctx, *choices: str):
+    """elige entre múltiples opciones."""
     await ctx.send(random.choice(choices))
 
 
 @bot.command()
-async def repeat(ctx, times: int, content='repeating...'):
-    """Repeats a message multiple times."""
+async def repetir(ctx, times: int, content='repitiendo...'):
+    """Repite un mensaje varias veces."""
     for i in range(times):
         await ctx.send(content)
 
 
 @bot.command()
 async def joined(ctx, member: discord.Member):
-    """Says when a member joined."""
-    await ctx.send(f'{member.name} joined {discord.utils.format_dt(member.joined_at)}')
+    """Dice cuando un miembro se unió."""
+    await ctx.send(f'{member.name} se unió {discord.utils.format_dt(member.joined_at)}')
 
 
 @bot.group()
 async def cool(ctx):
-    """Says if a user is cool.
+    """Dice si un usuario es genial.
 
-    In reality this just checks if a subcommand is being invoked.
+    En realidad, esto sólo comprueba si se está invocando un subcomando.
     """
     if ctx.invoked_subcommand is None:
-        await ctx.send(f'No, {ctx.subcommand_passed} is not cool')
+        await ctx.send(f'No, {ctx.subcommand_passed} no es cool')
 
 
-@cool.command(name='bot')
+@cool.command(name='rokikie')
 async def _bot(ctx):
-    """Is the bot cool?"""
-    await ctx.send('Yes, the bot is cool.')
+    """¿rokikie es cool?"""
+    await ctx.send('Sí, el bot es cool.')
 
 
-bot.run('token')
+bot.run('TOKEN')
